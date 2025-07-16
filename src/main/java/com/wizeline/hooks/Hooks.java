@@ -20,8 +20,13 @@ public class Hooks {
             
             // Elimina opciones problemáticas de Chrome
             ChromeOptions options = new ChromeOptions();
-            options.addArguments("--remote-allow-origins=*"); 
-            
+            options.addArguments("--remote-allow-origins=*");
+            options.addArguments("--no-sandbox");
+            options.addArguments("--disable-dev-shm-usage");
+            options.addArguments("--disable-gpu");
+            options.addArguments("--headless=new"); // obligatorio en GitHub Actions
+            options.addArguments("--user-data-dir=/tmp/chrome-user-data"); // evita error de sesión
+                        
             // Configura el driver
             WebDriver driver = new ChromeDriver(options);
             driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
