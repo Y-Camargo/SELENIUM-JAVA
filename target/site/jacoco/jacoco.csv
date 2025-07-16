@@ -1,10 +1,10 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-sourcedemo,com.wizeline.hooks,Hooks,33,48,2,2,7,16,2,3,0,3
+sourcedemo,com.wizeline.hooks,Hooks,44,96,5,3,9,22,4,3,0,3
 sourcedemo,com.wizeline.pages,BasePage,18,48,1,1,5,14,3,5,2,5
-sourcedemo,com.wizeline.pages,LoginPage,5,48,0,0,1,14,1,4,1,4
+sourcedemo,com.wizeline.pages,LoginPage,0,58,0,0,0,16,0,5,0,5
 sourcedemo,com.wizeline.utils,DriverManager,18,16,3,1,6,5,4,3,2,3
 sourcedemo,com.wizeline.utils,WebDriverFactory,32,0,4,0,11,0,5,0,3,0
 sourcedemo,com.wizeline.utils,ExtentReportsUtil,3,0,0,0,1,0,1,0,1,0
 sourcedemo,com.wizeline.utils,Config,3,0,0,0,1,0,1,0,1,0
 sourcedemo,com.wizeline.utils,TestUtils,3,0,0,0,1,0,1,0,1,0
-sourcedemo,com.wizeline.utils,BrowserUtils,113,0,2,0,28,0,10,0,9,0
+sourcedemo,com.wizeline.utils,BrowserUtils,149,0,4,0,37,0,11,0,9,0

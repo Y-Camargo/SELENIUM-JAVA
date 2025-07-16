@@ -1,4 +1,12 @@
 -------------------------------------------------------------------------------
 Test set: com.wizeline.TestRunner
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 10.25 s -- in com.wizeline.TestRunner
+Tests run: 2, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 9.457 s <<< FAILURE! -- in com.wizeline.TestRunner
+Login to the application.User logs in with invalid credentials -- Time elapsed: 2.064 s <<< FAILURE!
+java.lang.AssertionError
+	at org.junit.Assert.fail(Assert.java:87)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at org.junit.Assert.assertTrue(Assert.java:53)
+	at com.wizeline.steps.LoginSteps.iShouldSeeTheErrorMessage(LoginSteps.java:32)
+	at ✽.I should see the error message "perre: Username and password do not match any user in this service"(file:///C:/Users/polis/Downloads/sourcedemo/sourcedemo/src/test/resources/features/login.feature:11)
+

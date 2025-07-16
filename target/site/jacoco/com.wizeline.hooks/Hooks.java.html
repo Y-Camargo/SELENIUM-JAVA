@@ -2,55 +2,66 @@
 
 import io.cucumber.java.Before;
 import io.cucumber.java.After;
+import io.cucumber.java.Scenario;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+
 import io.github.bonigarcia.wdm.WebDriverManager;
+
+import com.wizeline.utils.BrowserUtils;
 import com.wizeline.utils.DriverManager;
 
 import java.util.concurrent.TimeUnit;
 
-<span class="fc" id="L13">public class Hooks {</span>
+<span class="fc" id="L18">public class Hooks {</span>
 
     @Before
     public void setUp() {
         try {
-            // Usa WebDriverManager para configurar automáticamente el driver
-<span class="fc" id="L19">            WebDriverManager.chromedriver().setup();</span>
-            
-            // Elimina opciones problemáticas de Chrome
-<span class="fc" id="L22">            ChromeOptions options = new ChromeOptions();</span>
-<span class="fc" id="L23">            options.addArguments(&quot;--remote-allow-origins=*&quot;); </span>
-            
-            // Configura el driver
-<span class="fc" id="L26">            WebDriver driver = new ChromeDriver(options);</span>
-<span class="fc" id="L27">            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);</span>
-<span class="fc" id="L28">            driver.manage().window().maximize();</span>
+<span class="fc" id="L23">            WebDriverManager.chromedriver().setup();</span>
 
-            // Asigna el WebDriver a DriverManager
-<span class="fc" id="L31">            DriverManager.setDriver(driver);</span>
-            
-            // Verifica si el WebDriver está inicializado correctamente
-<span class="pc bpc" id="L34" title="1 of 2 branches missed.">            if (DriverManager.getDriver() == null) {</span>
-<span class="nc" id="L35">                throw new IllegalStateException(&quot;El WebDriver no se ha inicializado correctamente.&quot;);</span>
+<span class="fc" id="L25">            ChromeOptions options = new ChromeOptions();</span>
+<span class="fc" id="L26">            options.addArguments(&quot;--remote-allow-origins=*&quot;);</span>
+<span class="fc" id="L27">            options.addArguments(&quot;--no-sandbox&quot;);</span>
+<span class="fc" id="L28">            options.addArguments(&quot;--disable-dev-shm-usage&quot;);</span>
+<span class="fc" id="L29">            options.addArguments(&quot;--disable-gpu&quot;);</span>
+<span class="fc" id="L30">            options.addArguments(&quot;--headless=new&quot;);</span>
+<span class="fc" id="L31">            options.addArguments(&quot;--user-data-dir=/tmp/chrome-user-data&quot;);</span>
+
+<span class="fc" id="L33">            WebDriver driver = new ChromeDriver(options);</span>
+<span class="fc" id="L34">            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);</span>
+<span class="fc" id="L35">            driver.manage().window().maximize();</span>
+
+<span class="fc" id="L37">            DriverManager.setDriver(driver);</span>
+
+<span class="pc bpc" id="L39" title="1 of 2 branches missed.">            if (DriverManager.getDriver() == null) {</span>
+<span class="nc" id="L40">                throw new IllegalStateException(&quot;El WebDriver no se ha inicializado correctamente.&quot;);</span>
             }
-<span class="nc" id="L37">        } catch (Exception e) {</span>
-<span class="nc" id="L38">            System.out.println(&quot;Error al iniciar el WebDriver: &quot; + e.getMessage());</span>
-<span class="nc" id="L39">            e.printStackTrace();</span>
-<span class="fc" id="L40">        }</span>
-<span class="fc" id="L41">    }</span>
-@After
-public void tearDown() {
+<span class="nc" id="L42">        } catch (Exception e) {</span>
+<span class="nc" id="L43">            System.out.println(&quot;Error al iniciar el WebDriver: &quot; + e.getMessage());</span>
+<span class="nc" id="L44">            e.printStackTrace();</span>
+<span class="fc" id="L45">        }</span>
+<span class="fc" id="L46">    }</span>
+
+    @After
+    public void tearDown(Scenario scenario) {
         try {
-<span class="fc" id="L45">            WebDriver driver = DriverManager.getDriver();</span>
-<span class="pc bpc" id="L46" title="1 of 2 branches missed.">            if (driver != null) {</span>
-<span class="fc" id="L47">                driver.quit();</span>
-            }
-<span class="nc" id="L49">        } catch (Exception e) {</span>
-<span class="nc" id="L50">            System.out.println(&quot;Error al cerrar el WebDriver: &quot; + e.getMessage());</span>
-<span class="nc" id="L51">            e.printStackTrace();</span>
-<span class="fc" id="L52">        }</span>
-<span class="fc" id="L53">    }</span>
-}   
+<span class="fc" id="L51">            WebDriver driver = DriverManager.getDriver();</span>
 
+<span class="pc bpc" id="L53" title="3 of 4 branches missed.">            if (scenario.isFailed() &amp;&amp; driver != null) {</span>
+<span class="nc" id="L54">                String screenshotName = scenario.getName().replaceAll(&quot;[^a-zA-Z0-9]&quot;, &quot;_&quot;);</span>
+<span class="nc" id="L55">                BrowserUtils.takeScreenshot(driver, screenshotName);</span>
+            }
+
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">            if (driver != null) {</span>
+<span class="fc" id="L59">                driver.quit();</span>
+            }
+<span class="nc" id="L61">        } catch (Exception e) {</span>
+<span class="nc" id="L62">            System.out.println(&quot;Error en tearDown: &quot; + e.getMessage());</span>
+<span class="nc" id="L63">            e.printStackTrace();</span>
+<span class="fc" id="L64">        }</span>
+<span class="fc" id="L65">    }</span>
+}
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

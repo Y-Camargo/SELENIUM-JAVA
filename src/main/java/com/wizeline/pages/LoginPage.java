@@ -3,6 +3,7 @@ package com.wizeline.pages;
 import com.wizeline.utils.Config;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 public class LoginPage extends BasePage {
 
@@ -35,6 +36,7 @@ public class LoginPage extends BasePage {
 
     // Obtiene el mensaje de error
     public String getErrorMessage() {
-        return readText(errorMessage);
+    WebElement errorElement = driver.findElement(By.cssSelector("[data-test='error']"));
+    return errorElement.getText().trim();
     }
 }

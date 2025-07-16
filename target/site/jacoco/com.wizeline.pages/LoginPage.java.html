@@ -3,39 +3,41 @@
 import com.wizeline.utils.Config;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 public class LoginPage extends BasePage {
 
-<span class="fc" id="L9">    private By usernameField = By.id(&quot;user-name&quot;);</span>
-<span class="fc" id="L10">    private By passwordField = By.id(&quot;password&quot;);</span>
-<span class="fc" id="L11">    private By loginButton = By.id(&quot;login-button&quot;);</span>
-<span class="fc" id="L12">    private By errorMessage = By.cssSelector(&quot;h3[data-test='error']&quot;);</span>
+<span class="fc" id="L10">    private By usernameField = By.id(&quot;user-name&quot;);</span>
+<span class="fc" id="L11">    private By passwordField = By.id(&quot;password&quot;);</span>
+<span class="fc" id="L12">    private By loginButton = By.id(&quot;login-button&quot;);</span>
+<span class="fc" id="L13">    private By errorMessage = By.cssSelector(&quot;h3[data-test='error']&quot;);</span>
 
     public LoginPage(WebDriver driver) {
-<span class="fc" id="L15">        super(driver);</span>
-<span class="fc" id="L16">    }</span>
+<span class="fc" id="L16">        super(driver);</span>
+<span class="fc" id="L17">    }</span>
 
     // Navega a la página de login
     public void openLoginPage() {
-<span class="fc" id="L20">        System.out.println(&quot;Abriendo la URL: &quot; + Config.BASE_URL);</span>
-<span class="fc" id="L21">        navigateTo(Config.BASE_URL);</span>
-<span class="fc" id="L22">    }</span>
+<span class="fc" id="L21">        System.out.println(&quot;Abriendo la URL: &quot; + Config.BASE_URL);</span>
+<span class="fc" id="L22">        navigateTo(Config.BASE_URL);</span>
+<span class="fc" id="L23">    }</span>
 
     // Inicia sesión con un nombre de usuario y una contraseña
     public void login(String username, String password) {
-<span class="fc" id="L26">        writeText(usernameField, username);</span>
-<span class="fc" id="L27">        writeText(passwordField, password);</span>
-<span class="fc" id="L28">        click(loginButton);</span>
-<span class="fc" id="L29">    }</span>
+<span class="fc" id="L27">        writeText(usernameField, username);</span>
+<span class="fc" id="L28">        writeText(passwordField, password);</span>
+<span class="fc" id="L29">        click(loginButton);</span>
+<span class="fc" id="L30">    }</span>
 
     // Verifica que la página de login esté visible
     public boolean isLoginPageDisplayed() {
-<span class="fc" id="L33">        return driver.getTitle().contains(&quot;Swag Labs&quot;);</span>
+<span class="fc" id="L34">        return driver.getTitle().contains(&quot;Swag Labs&quot;);</span>
     }
 
     // Obtiene el mensaje de error
     public String getErrorMessage() {
-<span class="nc" id="L38">        return readText(errorMessage);</span>
+<span class="fc" id="L39">    WebElement errorElement = driver.findElement(By.cssSelector(&quot;[data-test='error']&quot;));</span>
+<span class="fc" id="L40">    return errorElement.getText().trim();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
