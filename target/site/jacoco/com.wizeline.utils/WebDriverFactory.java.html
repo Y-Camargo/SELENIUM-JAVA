@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WebDriverFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcedemo</a> &gt; <a href="index.source.html" class="el_package">com.wizeline.utils</a> &gt; <span class="el_source">WebDriverFactory.java</span></div><h1>WebDriverFactory.java</h1><pre class="source lang-java linenums">package com.wizeline.utils;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+
+import java.util.concurrent.TimeUnit;
+
+<span class="nc" id="L10">public class WebDriverFactory {</span>
+
+    private static WebDriver driver;
+
+    // Método para obtener la instancia del WebDriver
+    public static WebDriver getDriver() {
+<span class="nc bnc" id="L16" title="All 2 branches missed.">        if (driver == null) {</span>
+            // Configurar WebDriverManager para obtener la última versión del driver
+<span class="nc" id="L18">            WebDriverManager.chromedriver().setup();</span>
+
+            // Configuración de opciones adicionales (como iniciar en modo headless, etc.)
+<span class="nc" id="L21">            ChromeOptions options = new ChromeOptions();</span>
+            // Opcional: opciones para ejecutar en headless (sin interfaz gráfica)
+            // options.addArguments(&quot;--headless&quot;);
+
+            // Crear un nuevo ChromeDriver con opciones configuradas
+<span class="nc" id="L26">            driver = new ChromeDriver(options);</span>
+
+            // Configuración de tiempos de espera
+<span class="nc" id="L29">            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);</span>
+        }
+
+<span class="nc" id="L32">        return driver;</span>
+    }
+
+    // Método para cerrar la instancia de WebDriver (importante para liberar recursos)
+    public static void quitDriver() {
+<span class="nc bnc" id="L37" title="All 2 branches missed.">        if (driver != null) {</span>
+<span class="nc" id="L38">            driver.quit(); // Cierra el navegador</span>
+<span class="nc" id="L39">            driver = null; // Libera la referencia</span>
+        }
+<span class="nc" id="L41">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

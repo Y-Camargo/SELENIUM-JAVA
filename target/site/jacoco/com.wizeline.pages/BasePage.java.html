@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BasePage.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcedemo</a> &gt; <a href="index.source.html" class="el_package">com.wizeline.pages</a> &gt; <span class="el_source">BasePage.java</span></div><h1>BasePage.java</h1><pre class="source lang-java linenums">package com.wizeline.pages;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
+
+public abstract class BasePage {
+
+    protected WebDriver driver;
+    protected WebDriverWait wait;
+
+    // Constructor de la clase base
+<span class="fc" id="L17">    public BasePage(WebDriver driver) {</span>
+<span class="pc bpc" id="L18" title="1 of 2 branches missed.">        if (driver == null) {</span>
+<span class="nc" id="L19">            throw new IllegalArgumentException(&quot;Driver cannot be null&quot;);</span>
+        }
+<span class="fc" id="L21">        this.driver = driver;</span>
+<span class="fc" id="L22">        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10)); // Asegúrate de que no sea null</span>
+<span class="fc" id="L23">    }</span>
+
+    // Espera a que un elemento sea visible
+    protected WebElement waitForElementVisible(By locator) {
+<span class="fc" id="L27">        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));</span>
+    }
+
+    // Hace clic en un elemento
+    protected void click(By locator) {
+<span class="fc" id="L32">        waitForElementVisible(locator).click();</span>
+<span class="fc" id="L33">    }</span>
+
+    // Escribe texto en un campo de entrada
+    protected void writeText(By locator, String text) {
+<span class="fc" id="L37">        WebElement element = waitForElementVisible(locator);</span>
+<span class="fc" id="L38">        element.clear();</span>
+<span class="fc" id="L39">        element.sendKeys(text);</span>
+<span class="fc" id="L40">    }</span>
+
+    // Lee el texto visible de un elemento
+    protected String readText(By locator) {
+<span class="nc" id="L44">        return waitForElementVisible(locator).getText();</span>
+    }
+
+    // Verifica si un elemento está presente
+    protected boolean isElementDisplayed(By locator) {
+        try {
+<span class="nc" id="L50">            return waitForElementVisible(locator).isDisplayed();</span>
+<span class="nc" id="L51">        } catch (Exception e) {</span>
+<span class="nc" id="L52">            return false;</span>
+        }
+    }
+
+    // Navega a una URL
+    public void navigateTo(String url) {
+<span class="fc" id="L58">        driver.get(url);</span>
+<span class="fc" id="L59">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

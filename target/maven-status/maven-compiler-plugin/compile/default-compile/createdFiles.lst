@@ -1,0 +1,9 @@
+com\wizeline\pages\BasePage.class
+com\wizeline\utils\BrowserUtils.class
+com\wizeline\utils\TestUtils.class
+com\wizeline\hooks\Hooks.class
+com\wizeline\pages\LoginPage.class
+com\wizeline\utils\WebDriverFactory.class
+com\wizeline\utils\Config.class
+com\wizeline\utils\ExtentReportsUtil.class
+com\wizeline\utils\DriverManager.class
