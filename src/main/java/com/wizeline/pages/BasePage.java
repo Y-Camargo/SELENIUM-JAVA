@@ -19,7 +19,7 @@ public abstract class BasePage {
             throw new IllegalArgumentException("Driver cannot be null");
         }
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10)); // Asegúrate de que no sea null
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     // Espera a que un elemento sea visible
