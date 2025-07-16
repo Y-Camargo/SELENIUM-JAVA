@@ -63,3 +63,16 @@ jobs:
         run: |
           google-chrome --version
           mvn test -Dwebdriver.chrome.driver=$(which chromedriver)
+
+      - name: Print test report on failure
+        if: failure()
+        run: |
+          echo "======= Surefire Report ======="
+          cat target/surefire-reports/*.txt || true
+
+      - name: Upload Cucumber HTML Report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: cucumber-report
+          path: target/cucumber-reports
