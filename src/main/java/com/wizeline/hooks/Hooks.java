@@ -2,10 +2,15 @@ package com.wizeline.hooks;
 
 import io.cucumber.java.Before;
 import io.cucumber.java.After;
+import io.cucumber.java.Scenario;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+
 import io.github.bonigarcia.wdm.WebDriverManager;
+
+import com.wizeline.utils.BrowserUtils;
 import com.wizeline.utils.DriverManager;
 
 import java.util.concurrent.TimeUnit;
@@ -15,27 +20,22 @@ public class Hooks {
     @Before
     public void setUp() {
         try {
-            // Usa WebDriverManager para configurar automáticamente el driver
             WebDriverManager.chromedriver().setup();
-            
-            // Elimina opciones problemáticas de Chrome
+
             ChromeOptions options = new ChromeOptions();
             options.addArguments("--remote-allow-origins=*");
             options.addArguments("--no-sandbox");
             options.addArguments("--disable-dev-shm-usage");
             options.addArguments("--disable-gpu");
-            options.addArguments("--headless=new"); // obligatorio en GitHub Actions
-            options.addArguments("--user-data-dir=/tmp/chrome-user-data"); // evita error de sesión
-                        
-            // Configura el driver
+            options.addArguments("--headless=new");
+            options.addArguments("--user-data-dir=/tmp/chrome-user-data");
+
             WebDriver driver = new ChromeDriver(options);
             driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
             driver.manage().window().maximize();
 
-            // Asigna el WebDriver a DriverManager
             DriverManager.setDriver(driver);
-            
-            // Verifica si el WebDriver está inicializado correctamente
+
             if (DriverManager.getDriver() == null) {
                 throw new IllegalStateException("El WebDriver no se ha inicializado correctamente.");
             }
@@ -44,17 +44,23 @@ public class Hooks {
             e.printStackTrace();
         }
     }
-@After
-public void tearDown() {
+
+    @After
+    public void tearDown(Scenario scenario) {
         try {
             WebDriver driver = DriverManager.getDriver();
+
+            if (scenario.isFailed() && driver != null) {
+                String screenshotName = scenario.getName().replaceAll("[^a-zA-Z0-9]", "_");
+                BrowserUtils.takeScreenshot(driver, screenshotName);
+            }
+
             if (driver != null) {
                 driver.quit();
             }
         } catch (Exception e) {
-            System.out.println("Error al cerrar el WebDriver: " + e.getMessage());
+            System.out.println("Error en tearDown: " + e.getMessage());
             e.printStackTrace();
         }
     }
-}   
-
+}

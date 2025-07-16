@@ -75,4 +75,11 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: cucumber-report
-          path: target/cucumber-reports
+          path: target/cucumber-reports/
+
+      - name: Upload Screenshots (on failure)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots
+          path: screenshots/

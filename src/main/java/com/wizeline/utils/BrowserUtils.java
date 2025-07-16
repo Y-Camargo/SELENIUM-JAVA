@@ -29,14 +29,31 @@ public class BrowserUtils {
 
     // Captura de screenshot
     public static void takeScreenshot(WebDriver driver, String fileName) {
-        try {
-            TakesScreenshot ts = (TakesScreenshot) driver;
-            File src = ts.getScreenshotAs(OutputType.FILE);
-            Files.copy(src.toPath(), Paths.get("screenshots/" + fileName + ".png"));
-        } catch (Exception e) {
-            System.out.println("Failed to take screenshot: " + e.getMessage());
+    try {
+        // Crear directorio si no existe
+        String directory = "screenshots/";
+        File folder = new File(directory);
+        if (!folder.exists()) {
+            folder.mkdirs();
         }
+
+        // Añadir timestamp para evitar sobrescribir
+        String timestamp = java.time.LocalDateTime.now()
+                .toString()
+                .replace(":", "-")
+                .replace(".", "-");
+
+        String fullFileName = directory + fileName + "_" + timestamp + ".png";
+
+        File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        Files.copy(screenshot.toPath(), Paths.get(fullFileName));
+
+        System.out.println("Screenshot saved at: " + fullFileName);
+    } catch (Exception e) {
+        System.out.println("Failed to take screenshot: " + e.getMessage());
     }
+}
+
 
     // Cambiar a nueva pestaña
     public static void switchToNewTab(WebDriver driver) {
