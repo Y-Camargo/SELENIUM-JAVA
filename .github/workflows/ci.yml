@@ -8,8 +8,59 @@ on:
   workflow_dispatch:
 
 jobs:
+
+
+  lint:
+     name: Lint & Static Analysis
+     runs-on: ubuntu-latest
+     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Cache Maven packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Validate project
+        run: mvn -B -U -q -DskipTests validate
+
+      - name: Spotless (format check)
+        run: mvn -B -q spotless:check
+
+      - name: Checkstyle
+        run: mvn -B -q checkstyle:check
+
+      - name: PMD
+        run: mvn -B -q pmd:check pmd:cpd-check
+
+      - name: SpotBugs
+        run: mvn -B -q spotbugs:check
+
+      - name: Upload static analysis reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: static-analysis-reports
+          path: |
+            **/target/checkstyle-result.xml
+            **/target/pmd.xml
+            **/target/spotbugsXml.xml
+            **/target/spotbugsXml.html
+            **/target/spotless*.*
+
   build:
     name: Build Project
+    needs: lint
     runs-on: ubuntu-latest
 
     steps:
