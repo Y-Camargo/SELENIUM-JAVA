@@ -1,9 +1,12 @@
 package com.wizeline.utils;
 
 import java.io.File;
+import java.io.IOException;                 // <-- para narrow catch
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Duration;
+import java.util.logging.Level;
+import java.util.logging.Logger;            // <-- logger
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoAlertPresentException;
@@ -16,69 +19,62 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class BrowserUtils {
 
-  // Espera explícita genérica
+  private static final Logger LOG = Logger.getLogger(BrowserUtils.class.getName());
+
   public static void waitForVisibility(WebDriver driver, By locator, int timeoutInSeconds) {
     new WebDriverWait(driver, Duration.ofSeconds(timeoutInSeconds))
         .until(ExpectedConditions.visibilityOfElementLocated(locator));
   }
 
-  // Scroll hacia un elemento
   public static void scrollToElement(WebDriver driver, WebElement element) {
     ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
   }
 
-  // Scroll hacia abajo
   public static void scrollDown(WebDriver driver) {
     ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight);");
   }
 
-  // Captura de screenshot
   public static void takeScreenshot(WebDriver driver, String fileName) {
+    // Crear directorio si no existe
+    String directory = "screenshots/";
+    File folder = new File(directory);
+    if (!folder.exists() && !folder.mkdirs()) {
+      LOG.warning("No se pudo crear el directorio de screenshots: " + directory);
+      return;
+    }
+
+    String timestamp =
+        java.time.LocalDateTime.now().toString().replace(":", "-").replace(".", "-");
+    String fullFileName = directory + fileName + "_" + timestamp + ".png";
+
     try {
-      // Crear directorio si no existe
-      String directory = "screenshots/";
-      File folder = new File(directory);
-      if (!folder.exists()) {
-        folder.mkdirs();
-      }
-
-      // Añadir timestamp para evitar sobrescribir
-      String timestamp =
-          java.time.LocalDateTime.now().toString().replace(":", "-").replace(".", "-");
-
-      String fullFileName = directory + fileName + "_" + timestamp + ".png";
-
       File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
       Files.copy(screenshot.toPath(), Paths.get(fullFileName));
-
-      System.out.println("Screenshot saved at: " + fullFileName);
-    } catch (Exception e) {
-      System.out.println("Failed to take screenshot: " + e.getMessage());
+      LOG.info("Screenshot guardado en: " + fullFileName);
+    } catch (IOException e) { // <-- más específico que Exception
+      LOG.log(Level.SEVERE, "No se pudo guardar el screenshot: " + fullFileName, e);
+      // decide si relanzar: throw new UncheckedIOException(e);
     }
   }
 
-  // Cambiar a nueva pestaña
   public static void switchToNewTab(WebDriver driver) {
     for (String window : driver.getWindowHandles()) {
       driver.switchTo().window(window);
     }
   }
 
-  // Aceptar alerta
   public static void acceptAlert(WebDriver driver) {
     try {
       driver.switchTo().alert().accept();
     } catch (NoAlertPresentException e) {
-      System.out.println("No alert to accept");
+      LOG.fine("No hay alerta para aceptar");
     }
   }
 
-  // Maximizar ventana
   public static void maximizeWindow(WebDriver driver) {
     driver.manage().window().maximize();
   }
 
-  // Refrescar página
   public static void refreshPage(WebDriver driver) {
     driver.navigate().refresh();
   }
