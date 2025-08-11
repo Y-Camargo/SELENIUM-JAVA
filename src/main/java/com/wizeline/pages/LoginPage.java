@@ -36,7 +36,7 @@ public class LoginPage extends BasePage {
 
   // Obtiene el mensaje de error
   public String getErrorMessage() {
-    WebElement errorElement = driver.findElement(By.cssSelector("[data-test='error']"));
+    WebElement errorElement = driver.findElement(errorMessage);
     return errorElement.getText().trim();
   }
 }
