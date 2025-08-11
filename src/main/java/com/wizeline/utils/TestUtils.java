@@ -1,3 +1,9 @@
 package com.wizeline.utils;
 
-public class TestUtils {}
+public final class TestUtils {
+  private TestUtils() {}
+
+  public static boolean isNullOrEmpty(String s) {
+    return s == null || s.isEmpty();
+  }
+}
