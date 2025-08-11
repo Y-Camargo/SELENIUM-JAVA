@@ -46,6 +46,12 @@ jobs:
       - name: SpotBugs
         run: mvn -B -q spotbugs:check
 
+      - name: Print PMD report on failure
+        if: failure()
+        run: |
+          echo "== PMD violations =="
+          sed -n '1,200p' target/pmd.xml || true
+
       - name: Upload static analysis reports
         if: always()
         uses: actions/upload-artifact@v4
@@ -83,6 +89,7 @@ jobs:
 
       - name: Build project with Maven
         run: mvn clean install -DskipTests
+        
 
   test:
     name: Run Selenium Tests
