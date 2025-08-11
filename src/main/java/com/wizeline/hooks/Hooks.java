@@ -7,56 +7,56 @@ import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;   // <-- usa logger JDK
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 public class Hooks {
 
+  private static final Logger LOG = Logger.getLogger(Hooks.class.getName());
+
   @Before
   public void setUp() {
-    try {
-      WebDriverManager.chromedriver().setup();
+    WebDriverManager.chromedriver().setup();
 
-      ChromeOptions options = new ChromeOptions();
-      options.addArguments("--remote-allow-origins=*");
-      options.addArguments("--no-sandbox");
-      options.addArguments("--disable-dev-shm-usage");
-      options.addArguments("--disable-gpu");
-      options.addArguments("--headless=new");
-      options.addArguments("--user-data-dir=/tmp/chrome-user-data");
+    ChromeOptions options = new ChromeOptions();
+    options.addArguments("--remote-allow-origins=*");
+    options.addArguments("--no-sandbox");
+    options.addArguments("--disable-dev-shm-usage");
+    options.addArguments("--disable-gpu");
+    options.addArguments("--headless=new");
+    options.addArguments("--user-data-dir=/tmp/chrome-user-data");
 
-      WebDriver driver = new ChromeDriver(options);
-      driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-      driver.manage().window().maximize();
+    WebDriver driver = new ChromeDriver(options);
+    driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+    driver.manage().window().maximize();
 
-      DriverManager.setDriver(driver);
+    DriverManager.setDriver(driver);
 
-      if (DriverManager.getDriver() == null) {
-        throw new IllegalStateException("El WebDriver no se ha inicializado correctamente.");
-      }
-    } catch (Exception e) {
-      System.out.println("Error al iniciar el WebDriver: " + e.getMessage());
-      e.printStackTrace();
+    if (DriverManager.getDriver() == null) {
+      throw new IllegalStateException("El WebDriver no se ha inicializado correctamente.");
     }
   }
 
   @After
   public void tearDown(Scenario scenario) {
+    WebDriver driver = null;
     try {
-      WebDriver driver = DriverManager.getDriver();
-
+      driver = DriverManager.getDriver();
       if (scenario.isFailed() && driver != null) {
         String screenshotName = scenario.getName().replaceAll("[^a-zA-Z0-9]", "_");
         BrowserUtils.takeScreenshot(driver, screenshotName);
       }
-
+    } catch (RuntimeException e) {
+      LOG.log(Level.SEVERE, "Error en tearDown", e);
+      throw e; // no tragues la excepción
+    } finally {
       if (driver != null) {
         driver.quit();
       }
-    } catch (Exception e) {
-      System.out.println("Error en tearDown: " + e.getMessage());
-      e.printStackTrace();
+      DriverManager.removeDriver(); // si tienes este método; si no, mantén el existente
     }
   }
 }
