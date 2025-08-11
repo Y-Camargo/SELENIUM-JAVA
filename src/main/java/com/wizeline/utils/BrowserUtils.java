@@ -17,9 +17,13 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class BrowserUtils {
+public final class BrowserUtils {
 
   private static final Logger LOG = Logger.getLogger(BrowserUtils.class.getName());
+
+  private BrowserUtils() {
+    // Utility class: prevenir instanciación
+  }
 
   public static void waitForVisibility(WebDriver driver, By locator, int timeoutInSeconds) {
     new WebDriverWait(driver, Duration.ofSeconds(timeoutInSeconds))
