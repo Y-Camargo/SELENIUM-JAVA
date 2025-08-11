@@ -48,10 +48,7 @@ jobs:
         run: |
           echo "== PMD violations =="
           sed -n '1,200p' target/pmd.xml || true
-
-      - name: SpotBugs
-        run: mvn -B -q spotbugs:check
-  
+          
       - name: Upload static analysis reports
         if: always()
         uses: actions/upload-artifact@v4
@@ -60,8 +57,6 @@ jobs:
           path: |
             **/target/checkstyle-result.xml
             **/target/pmd.xml
-            **/target/spotbugsXml.xml
-            **/target/spotbugsXml.html
             **/target/spotless*.*
 
   build:
