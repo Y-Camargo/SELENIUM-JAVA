@@ -8,7 +8,7 @@ import io.cucumber.java.Scenario;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
-import java.util.logging.Logger;   // <-- usa logger JDK
+import java.util.logging.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -51,12 +51,13 @@ public class Hooks {
       }
     } catch (RuntimeException e) {
       LOG.log(Level.SEVERE, "Error en tearDown", e);
-      throw e; // no tragues la excepción
+      throw e;
     } finally {
       if (driver != null) {
         driver.quit();
       }
-      DriverManager.removeDriver(); // si tienes este método; si no, mantén el existente
+      // Si tu DriverManager no tiene removeDriver(), omite esta línea
+      // DriverManager.removeDriver();
     }
   }
 }

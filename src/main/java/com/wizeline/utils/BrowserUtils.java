@@ -1,12 +1,12 @@
 package com.wizeline.utils;
 
 import java.io.File;
-import java.io.IOException;                 // <-- para narrow catch
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.logging.Level;
-import java.util.logging.Logger;            // <-- logger
+import java.util.logging.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoAlertPresentException;
@@ -35,7 +35,6 @@ public class BrowserUtils {
   }
 
   public static void takeScreenshot(WebDriver driver, String fileName) {
-    // Crear directorio si no existe
     String directory = "screenshots/";
     File folder = new File(directory);
     if (!folder.exists() && !folder.mkdirs()) {
@@ -43,17 +42,15 @@ public class BrowserUtils {
       return;
     }
 
-    String timestamp =
-        java.time.LocalDateTime.now().toString().replace(":", "-").replace(".", "-");
+    String timestamp = java.time.LocalDateTime.now().toString().replace(":", "-").replace(".", "-");
     String fullFileName = directory + fileName + "_" + timestamp + ".png";
 
     try {
       File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
       Files.copy(screenshot.toPath(), Paths.get(fullFileName));
       LOG.info("Screenshot guardado en: " + fullFileName);
-    } catch (IOException e) { // <-- más específico que Exception
+    } catch (IOException e) {
       LOG.log(Level.SEVERE, "No se pudo guardar el screenshot: " + fullFileName, e);
-      // decide si relanzar: throw new UncheckedIOException(e);
     }
   }
 
