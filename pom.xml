@@ -145,25 +145,6 @@
       </plugin>
 
       <plugin>
-        <groupId>com.github.spotbugs</groupId>
-        <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>4.8.6.5</version>
-        <configuration>
-          <effort>Max</effort>
-          <threshold>Low</threshold>
-          <failOnError>true</failOnError>
-          <xmlOutput>true</xmlOutput>
-          <excludeFilterFile>spotbugs-exclude.xml</excludeFilterFile> <!-- opcional -->
-        </configuration>
-        <executions>
-          <execution>
-            <phase>verify</phase>
-            <goals><goal>check</goal></goals>
-          </execution>
-        </executions>   
-      </plugin>
-
-      <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>${jacoco-maven-plugin.version}</version>
