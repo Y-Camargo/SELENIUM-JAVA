@@ -2,9 +2,11 @@ package com.wizeline.utils;
 
 import org.openqa.selenium.WebDriver;
 
-public class DriverManager {
+public final class DriverManager {
 
-  private static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
+  private DriverManager() {} // utility class
+
+  private static final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
   public static WebDriver getDriver() {
     if (driver.get() == null) {

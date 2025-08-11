@@ -1,6 +1,8 @@
 package com.wizeline.utils;
 
-public class Config {
+public final class Config {
+
+  private Config() {} // utility class
 
   public static final String BASE_URL = "https://www.saucedemo.com";
   public static final int DEFAULT_WAIT_TIME = 10;
