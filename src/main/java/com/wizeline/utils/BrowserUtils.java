@@ -29,8 +29,7 @@ public class BrowserUtils {
 
   // Scroll hacia abajo
   public static void scrollDown(WebDriver driver) {
-    ((JavascriptExecutor) driver)
-        .executeScript("window.scrollTo(0, document.body.scrollHeight);");
+    ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight);");
   }
 
   // Captura de screenshot
