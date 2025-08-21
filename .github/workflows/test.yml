@@ -26,9 +26,7 @@ jobs:
         with:
           distribution: temurin
           java-version: ${{ matrix.java }}
-      - name: Compile
-        run: javac HelloWorldApp.java
-
+          
       - name: Cache Maven packages
         uses: actions/cache@v4
         with:
